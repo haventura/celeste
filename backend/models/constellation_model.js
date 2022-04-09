@@ -11,9 +11,9 @@ const Constellation = db.define(
       primaryKey: true,
     },
     name: { type: Sequelize.STRING, allowNull: false },
-    description: { type: Sequelize.STRING, allowNull: true },
-    right_ascension: { type: Sequelize.TIME, allowNull: true },
-    declination: { type: Sequelize.FLOAT, allowNull: true },
+    description: { type: Sequelize.TEXT, allowNull: true },
+    right_ascension: { type: Sequelize.STRING, allowNull: true },
+    declination: { type: Sequelize.STRING, allowNull: true },
     area: { type: Sequelize.FLOAT, allowNull: true },
   },
   {

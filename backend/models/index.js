@@ -10,6 +10,8 @@ db.Constellation = require("../models/constellation_model");
 db.Constellation.hasMany(db.Star, {
   foreignKey: "constellation_id",
 });
-db.Star.belongsTo(db.Constellation);
+db.Star.belongsTo(db.Constellation, {
+  foreignKey: "constellation_id",
+});
 
 module.exports = db;

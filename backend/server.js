@@ -20,5 +20,5 @@ app.use("/", routes);
 db.sync({ force: false });
 
 server.listen(port, () => {
-  console.log("listening on *:" + 3000);
+  console.log("listening on *:" + port);
 });
