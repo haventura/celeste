@@ -61,11 +61,11 @@ exports.update_constellation = async function (req, res) {
 exports.get_constellation_by_id = async function (req, res) {
   await Constellation.findOne({
     include: Star,
-    where: { constellation_id: req.params.id },
+    where: { constellation_id: req.params.constellation_id },
   })
     .then((data) => {
       console.log(
-        `>>get_constellation_by_id with id = ${req.params.id}<<`
+        `>>get_constellation_by_id with id = ${req.params.constellation_id}<<`
       );
       res.json(data);
     })
@@ -74,10 +74,10 @@ exports.get_constellation_by_id = async function (req, res) {
     });
 };
 exports.delete_constellation_by_id = async function (req, res) {
-  await Constellation.destroy({ where: { constellation_id: req.params.id } })
+  await Constellation.destroy({ where: { constellation_id: req.params.constellation_id } })
     .then((data) => {
       console.log(
-        `>>delete_constellation_by_id with id = ${req.params.id}<<`
+        `>>delete_constellation_by_id with id = ${req.params.constellation_id}<<`
       );
       res.json(data);
     })

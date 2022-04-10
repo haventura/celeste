@@ -57,7 +57,7 @@ exports.update_star = async function (req, res) {
   )
     .then((data) => {
       console.log(`>>update_star with id = ${req.body.star_id}<<`);
-      res.json(data);
+      res.body(data);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
@@ -67,10 +67,10 @@ exports.get_star_by_id = async function (req, res) {
   await Star.findOne({
     include: Constellation,
     attributes: { exclude: ["constellation_id"] },
-    where: { star_id: req.params.id },
+    where: { star_id: req.params.star_id },
   })
     .then((data) => {
-      console.log(`>>get_star_by_id with id = ${req.params.id}<<`);
+      console.log(`>>get_star_by_id with id = ${req.params.star_id}<<`);
       res.json(data);
     })
     .catch((err) => {
@@ -78,9 +78,9 @@ exports.get_star_by_id = async function (req, res) {
     });
 };
 exports.delete_star_by_id = async function (req, res) {
-  await Star.destroy({ where: { star_id: req.params.id } })
+  await Star.destroy({ where: { star_id: req.params.star_id } })
     .then((data) => {
-      console.log(`>>delete_star_by_id with id = ${req.params.id}<<`);
+      console.log(`>>delete_star_by_id with id = ${req.params.star_id}<<`);
       res.json(data);
     })
     .catch((err) => {
