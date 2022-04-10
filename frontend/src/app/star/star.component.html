@@ -1,0 +1,62 @@
+<h2>Stars</h2>
+<div class="search">
+  <label for="star_name">Star name: </label>
+  <input type="text" [(ngModel)]="star_name" id="star_name" />
+  <label for="star_description">Star description: </label>
+  <input type="text" [(ngModel)]="star_description" id="star_description" />
+
+  <button
+    type="button"
+    [disabled]="!star_name"
+    (click)="add(star_name, star_description)"
+  >
+    Add star
+  </button>
+  <button type="button" (click)="search(star_name)">Search</button>
+</div>
+
+<ul class="star">
+  <li *ngFor="let star of star_list">
+    <span class="badge">{{ star.star_id || -1 }}</span>
+    <span *ngIf="star !== edited_star; else editInput" class="name"
+      >{{ star.name }} {{ star.description }}.</span
+    >
+    <ng-template #editInput>
+      <input
+        #edited_star_name
+        type="text"
+        class="name"
+        [value]="edited_star!.name"
+        (keydown.enter)="
+          edit(edited_star_name.value, edited_star_description.value)
+        "
+      />
+      <input
+        #edited_star_description
+        type="text"
+        class="description"
+        [value]="edited_star!.description"
+        (keydown.enter)="
+          edit(edited_star_name.value, edited_star_description.value)
+        "
+      />
+    </ng-template>
+    <button
+      *ngIf="star !== edited_star"
+      type="button"
+      class="edit"
+      title="edit star"
+      (click)="edited_star = star"
+    >
+      Edit
+    </button>
+    <button
+      type="button"
+      class="delete"
+      title="delete star"
+      (click)="delete(star)"
+    >
+      Delete
+    </button>
+  </li>
+</ul>
