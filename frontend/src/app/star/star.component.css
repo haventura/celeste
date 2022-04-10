@@ -1,87 +1,155 @@
 /* StarComponent's private CSS styles */
 .search input {
-    margin: 1rem 0;
-  }
-  
-  .star {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .star li {
-    display: grid;
-    grid-template-columns: min-content max-content max-content max-content 1fr max-content max-content;
-    grid-template-areas: "badge name country description . edit delete";
-    margin: 1rem 0;
-    align-items: center;
-    background-color: #eee;
-    border-radius: 4px;
-  }
-  
-  .star li .badge {
-    grid-area: badge;
-  }
-  
-  .star li .name {
-    grid-area: name;
+  margin: 1rem 0;
+}
+.info_card_header {
+  grid-area: info_card_header;
+}
+.input_name,
+.info_name {
+  grid-area: name;
+}
+.input_description,
+.info_description {
+  grid-area: description;
+}
+.input_right_ascension,
+.info_right_ascension {
+  grid-area: right_ascension;
+}
+.input_declination,
+.info_declination {
+  grid-area: declination;
+}
+.input_apparent_magnitude,
+.info_apparent_magnitude {
+  grid-area: apparent_magnitude;
+}
+.input_mass,
+.info_mass {
+  grid-area: mass;
+}
+.input_radius,
+.info_radius {
+  grid-area: radius;
+}
+.input_age,
+.info_age {
+  grid-area: age;
+}
+
+.star_window {
+  display: grid;
+  grid-template-areas:
+    "search info_card"
+    "star_list info_card";
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+.info_card {
+  display: grid;
+  grid-template-areas:
+    "info_card_header info_card_header" 
+    "name_header name"
+    "description_header description"
+    "right_ascension_header right_ascension"
+    "declination_header declination"
+    "apparent_magnitude_header apparent_magnitude"
+    "mass_header mass"
+    "radius_header radius"
+    "age_header age"
+    "button_edit button_delete";
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 5px;
+  grid-area: info_card;
+}
+
+.star_list {
+  list-style-type: none;
+  padding: 0;
+  grid-area: star_list;
+}
+
+.star_list li {
+  display: grid;
+  grid-template-columns: min-content max-content max-content max-content 1fr max-content max-content;
+  grid-template-areas: "badge name country description . edit delete";
+  margin: 1rem 0;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.star_list li .badge {
+  grid-area: badge;
+}
+
+.star_list li .name {
+  grid-area: name;
+}
+
+.star_list li .country {
+  grid-area: country;
+}
+
+.star_list li .description {
+  grid-area: description;
+}
+
+.star_list li button {
+  margin: 0.3rem;
+  padding: 0.3rem 0.8rem;
+}
+
+.star_list li button.edit {
+  grid-area: edit;
+}
+
+.star_list li button.delete {
+  grid-area: delete;
+}
+
+.star_list li button:hover,
+.star_list li button:focus {
+  color: #eee;
+  background-color: #000;
+}
+
+.star_list .badge {
+  padding: 0.5rem 0.6rem;
+  color: white;
+  background-color: #435b60;
+  margin-right: 0.8rem;
+  border-radius: 4px 0 0 4px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.star_list input {
+  max-width: 12rem;
+  padding: 0.25rem;
+}
+
+@media (max-width: 550px) {
+  .star_list li {
+    grid-template-columns: min-content 1fr 1fr;
+    grid-template-rows: 2rem max-content;
+    grid-template-areas:
+      "badge name name"
+      "badge edit delete";
   }
 
-  .star li .country {
-    grid-area: country;
+  .star_list li .name {
+    margin-top: 0.3rem;
   }
 
-  .star li .description {
-    grid-area: description;
+  .star_list li button {
+    justify-self: center;
   }
-  
-  .star li button {
-    margin: 0.3rem;
-    padding: 0.3rem 0.8rem;
-  }
-  
-  .star li button.edit {
-    grid-area: edit;
-  }
-  
-  .star li button.delete {
-    grid-area: delete;
-  }
-  
-  .star li button:hover, .star li button:focus {
-    color: #eee;
-    background-color: #000;
-  }
-  
-  .star .badge {
-    padding: 0.5rem 0.6rem;
-    color: white;
-    background-color: #435B60;
-    margin-right: 0.8rem;
-    border-radius: 4px 0 0 4px;
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-  }
-  
-  .star input {
-    max-width: 12rem;
-    padding: .25rem;
-  }
-  
-  @media (max-width: 550px) {
-    .star li {
-      grid-template-columns: min-content 1fr 1fr;
-      grid-template-rows: 2rem max-content;
-      grid-template-areas:
-        "badge name name"
-        "badge edit delete";
-    }
-  
-    .star li .name {
-      margin-top: 0.3rem;
-    }
-  
-    .star li button {
-      justify-self: center;
-    }
-  }
+}

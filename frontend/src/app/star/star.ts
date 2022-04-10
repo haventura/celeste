@@ -4,7 +4,7 @@ export interface Star {
     description: string;
     right_ascension: string;
     declination: string;
-    apparent_magnitude: string;
+    apparent_magnitude: number;
     mass: number;
     radius: number;
     age: number;
