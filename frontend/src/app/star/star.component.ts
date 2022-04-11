@@ -14,85 +14,85 @@ export class StarComponent implements OnInit {
   star_list: Star[] = [];
   selected_star: Star | undefined;
   edited_star: Star | undefined; // the star currently being edited
+  new_star: Star | undefined;
 
-  star_name = '';
-  star_description = '';
-  star_right_ascension = '';
-  star_declination = '';
-  star_apparent_magnitude = 0.0;
-  star_mass = 0.0;
-  star_radius = 0.0;
-  star_age = 0.0;
+  star_name_search: string = '';
 
   constructor(private starService: StarService) {}
-
-  @ViewChild('edited_star_name')
-  set edited_star_name(element: ElementRef<HTMLInputElement>) {
-    if (element) {
-      element.nativeElement.focus();
-    }
-  }
 
   ngOnInit() {
     this.get_star_list();
   }
 
-  select(star_id:number){
+  handle_event_select_star(star_id: number) {
     this.edited_star = undefined;
-    this.selected_star = this.star_list.find(star => star.star_id === star_id);
+    this.new_star = undefined;
+    this.selected_star = this.star_list.find(
+      (star) => star.star_id === star_id
+    );
+  }
+
+  handle_event_edit_star(){
+    this.edited_star = this.selected_star;
+    this.selected_star = undefined;
+    this.new_star = undefined;
+  }
+
+  handle_event_confirm_edit() {
+    if(this.edited_star && this.edited_star.name){
+      this.update_star();  
+      this.selected_star = this.edited_star;
+    }
+    else{
+      this.selected_star = this.star_list[0];
+    }
+    this.edited_star = undefined;
+    this.new_star = undefined;
+  }
+
+  handle_event_new_star() {
+    this.selected_star = undefined;
+    this.edited_star = undefined;
+    this.new_star = { name: 'New star' } as Star;
+  }
+
+  handle_event_confirm_new() {
+    this.selected_star = this.star_list[-1]
+    if(this.new_star && this.new_star.name){
+      this.add_star();  
+      this.selected_star = this.star_list[-1];
+    }
+    else{
+      this.selected_star = this.star_list[0];
+    }
+    this.edited_star = undefined;
+    this.new_star = undefined;
   }
 
   get_star_list(): void {
     this.starService
       .get_star_list('')
-      .subscribe((star_list) => (this.star_list = star_list, this.selected_star = star_list[0]));
+      .subscribe(
+        (star_list) => (
+          (this.star_list = star_list), (this.selected_star = star_list[0])
+        )
+      );
   }
 
-  add(name: string, description: string): void {
-    this.edited_star = undefined;
-    name = name.trim();
-    description = description.trim();
-    if (!name) {
-      return;
-    }
-    // The server will generate the id for this new star
-    const new_star: Star = { name, description } as Star;
+  add_star(){
     this.starService
-      .add_star(new_star)
-      .subscribe((star) => this.star_list.push(star));
+          .add_star(this.new_star!)
+          .subscribe((star) => (this.star_list.push(star)));  
   }
 
-  delete(star: Star): void {
+  delete_star(star: Star): void {
     this.star_list = this.star_list.filter((d) => d !== star);
     this.starService.delete_star_by_id(star.star_id).subscribe();
   }
 
-  edit(
-    name: string,
-    description: string,
-    right_ascension: string,
-    declination: string,
-    apparent_magnitude: string,
-    mass: string,
-    radius: string,
-    age: string
-  ) {
-    this.update(
-      name,
-      description,
-      right_ascension,
-      declination,
-      apparent_magnitude as unknown as number,
-      mass as unknown as number,
-      radius as unknown as number,
-      age as unknown as number
-    );
+  search_star_name(star_name: string) {
     this.edited_star = undefined;
-  }
-
-  search(star_name: string) {
-    this.edited_star = undefined;
-    if (star_name !== '' && star_name !== null) {
+    if (star_name && star_name !== '') {
       this.starService
         .get_star_list(star_name)
         .subscribe((star_list) => (this.star_list = star_list));
@@ -101,40 +101,19 @@ export class StarComponent implements OnInit {
     }
   }
 
-  update(
-    name: string,
-    description: string,
-    right_ascension: string,
-    declination: string,
-    apparent_magnitude: number,
-    mass: number,
-    radius: number,
-    age: number
-  ) {
-    if (name && this.edited_star) {
-      this.starService
-        .update_star({
-          ...this.edited_star,
-          name: name,
-          description: description,
-          right_ascension: right_ascension,
-          declination: declination,
-          apparent_magnitude: apparent_magnitude,
-          mass: mass,
-          radius: radius,
-          age: age,
-        })
-        .subscribe((star) => {
-          // replace the star in the star_list list with update from server
-          const index = star
-            ? this.star_list.findIndex((d) => d.star_id === star.star_id)
-            : -1;
-          if (index > -1) {
-            this.star_list[index] = star;
-            this.selected_star = star;
-          }
-        });
-      this.edited_star = undefined;
-    }
+  update_star() {
+    this.starService
+      .update_star({
+        ...this.edited_star!
+      })
+      .subscribe((star) => {
+        // replace the star in the star_list list with update from server
+        const index = star
+          ? this.star_list.findIndex((d) => d.star_id === star.star_id)
+          : -1;
+        if (index > -1) {
+          this.star_list[index] = star;         
+        }
+    }); 
   }
 }

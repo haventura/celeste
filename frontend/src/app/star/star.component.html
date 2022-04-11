@@ -19,151 +19,87 @@
     <label for="info_radius" class="radius_header">Radius:</label>
     <label for="info_age" class="age_header">Age:</label>
     <input
-      #input_name
       type="text"
       class="input_name"
-      [value]="edited_star!.name"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.name : edited_star!.name" 
+      (ngModelChange)="new_star ? new_star!.name = $event : edited_star!.name = $event"  
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
 
     <input
-      #input_description
       type="text"
       class="input_description"
-      [value]="edited_star!.description"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.description : edited_star!.description" 
+      (ngModelChange)="new_star ? new_star!.description = $event : edited_star!.description = $event" 
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
     <input
-      #input_right_ascension
       type="text"
       class="input_right_ascension"
-      [value]="edited_star!.right_ascension"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.right_ascension : edited_star!.right_ascension" 
+      (ngModelChange)="new_star ? new_star!.right_ascension = $event : edited_star!.right_ascension = $event" 
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
     <input
-      #input_declination
       type="text"
       class="input_declination"
-      [value]="edited_star!.declination"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.declination : edited_star!.declination" 
+      (ngModelChange)="new_star ? new_star!.declination = $event : edited_star!.declination = $event"
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
     <input
-      #input_apparent_magnitude
       type="number"
       class="input_apparent_magnitude"
-      [value]="edited_star!.apparent_magnitude"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.apparent_magnitude : edited_star!.apparent_magnitude" 
+      (ngModelChange)="new_star ? new_star!.apparent_magnitude = $event : edited_star!.apparent_magnitude = $event"
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
     <input
-      #input_mass
       type="number"
       class="input_mass"
-      [value]="edited_star!.mass"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.mass : edited_star!.mass" 
+      (ngModelChange)="new_star ? new_star!.mass = $event : edited_star!.mass = $event"
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
     <input
-      #input_radius
       type="number"
       class="input_radius"
-      [value]="edited_star!.radius"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.radius : edited_star!.radius" 
+      (ngModelChange)="new_star ? new_star!.radius = $event : edited_star!.radius = $event"
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
     <input
-      #input_age
       type="number"
       class="input_age"
       id="input_age"
-      [value]="edited_star!.age"
-      (keydown.enter)="
-        edit(
-          input_name.value,
-          input_description.value,
-          input_right_ascension.value,
-          input_declination.value,
-          input_apparent_magnitude.value,
-          input_mass.value,
-          input_radius.value,
-          input_age.value
-        )
-      "
+      [ngModel]="new_star ? new_star!.age : edited_star!.age" 
+      (ngModelChange)="new_star ? new_star!.age = $event : edited_star!.age = $event"
+      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
     />
+    <button
+      type="button"
+      class="button_add"
+      [disabled]="!new_star"
+      (click)="add_star()"
+    >
+      {{ new_star ? "Confirm" : "Add new" }}
+    </button>
+    <button
+      type="button"
+      class="button_edit"
+      [disabled]="new_star"
+      (click)="handle_event_confirm_edit()"
+    >
+      {{ new_star ? "Edit" : "Confirm" }}
+    </button>
+    <button
+      type="button"
+      class="button_delete"
+      [disabled]="selected_star === undefined"
+      (click)="delete_star(selected_star!)"
+    >
+      Delete
+    </button>
   </div>
 </ng-template>
 
@@ -172,18 +108,21 @@
 <div class="star_window">
   <div class="search">
     <label for="star_name">Star name: </label>
-    <input type="text" [(ngModel)]="star_name" id="star_name" />
-    <button type="button" (click)="search(star_name)">Search</button>
+    <input type="text" [(ngModel)]="star_name_search" id="star_name" />
+    <button type="button" (click)="search_star_name(star_name_search)">Search</button>
   </div>
 
   <ul class="star_list">
     <li *ngFor="let star of star_list">
       <span class="badge">{{ star.star_id || -1 }}</span>
-      <p (click)="select(star.star_id)" class="name">{{ star.name }}</p>
+      <p (click)="handle_event_select_star(star.star_id)" class="name">{{ star.name }}</p>
     </li>
   </ul>
 
-  <div class="info_card" *ngIf="edited_star === undefined else edit_input">
+  <div
+    class="info_card"
+    *ngIf="selected_star; else edit_input;"
+  >
     <p class="info_card_header">Star X information:</p>
 
     <label for="info_name" class="name_header">Name:</label>
@@ -221,20 +160,24 @@
     }}</span>
     <span class="info_age" id="info_age">{{ selected_star!.age }}</span>
     <button
-      *ngIf="selected_star !== edited_star"
+      type="button"
+      class="button_add"
+      (click)="handle_event_new_star()"
+    >
+      Add new
+    </button>
+    <button
       type="button"
       class="button_edit"
-      title="edit star"
-      (click)="edited_star = selected_star"
+      (click)="handle_event_edit_star()"
     >
       Edit
     </button>
     <button
       *ngIf="selected_star !== undefined"
       type="button"
-      class="delete"
-      title="delete star"
-      (click)="delete(selected_star)"
+      class="button_delete"
+      (click)="delete_star(selected_star)"
     >
       Delete
     </button>

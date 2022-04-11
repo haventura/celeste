@@ -14,7 +14,7 @@ import { ConstellationComponent } from './constellation/constellation.component'
   declarations: [
     AppComponent,
     StarComponent,
-    ConstellationComponent
+    ConstellationComponent,
   ],
   imports: [
     BrowserModule,

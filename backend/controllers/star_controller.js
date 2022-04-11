@@ -35,7 +35,7 @@ exports.add_star = async function (req, res) {
     .save()
     .then((data) => {
       console.log(`>>add_star with id = ${data.star_id}<<`);
-      res.json(data);
+      res.send(data);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
@@ -57,7 +57,7 @@ exports.update_star = async function (req, res) {
   )
     .then((data) => {
       console.log(`>>update_star with id = ${req.body.star_id}<<`);
-      res.body(data);
+      res.send(data);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
