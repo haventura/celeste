@@ -57,16 +57,21 @@ export class StarComponent implements OnInit {
   }
 
   handle_event_confirm_new() {
-    this.selected_star = this.star_list[-1]
     if(this.new_star && this.new_star.name){
-      this.add_star();  
-      this.selected_star = this.star_list[-1];
+      this.add_star();
     }
     else{
       this.selected_star = this.star_list[0];
     }
     this.edited_star = undefined;
     this.new_star = undefined;
+  }
+
+  handle_event_delete_star() {
+    this.delete_star(this.selected_star!);
+    this.selected_star = this.star_list[0];
+    this.edited_star = undefined;
+    this.new_star = undefined
   }
 
   get_star_list(): void {
@@ -79,10 +84,11 @@ export class StarComponent implements OnInit {
       );
   }
 
-  add_star(){
+  add_star(): void{
+    let new_star: Star = {} as Star;
     this.starService
           .add_star(this.new_star!)
-          .subscribe((star) => (this.star_list.push(star)));  
+          .subscribe((star) => ((this.star_list.push(star)), (this.selected_star = star)));
   }
 
   delete_star(star: Star): void {

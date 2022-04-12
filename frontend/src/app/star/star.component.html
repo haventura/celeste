@@ -1,6 +1,6 @@
 <ng-template #edit_input>
   <div class="info_card">
-    <p class="info_card_header">Star X information:</p>
+    <p class="info_card_header">{{selected_star!.name}} informations:</p>
 
     <label for="info_name" class="name_header">Name:</label>
     <label for="info_description" class="description_header"
@@ -23,7 +23,7 @@
       class="input_name"
       [ngModel]="new_star ? new_star!.name : edited_star!.name" 
       (ngModelChange)="new_star ? new_star!.name = $event : edited_star!.name = $event"  
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
 
     <input
@@ -31,42 +31,42 @@
       class="input_description"
       [ngModel]="new_star ? new_star!.description : edited_star!.description" 
       (ngModelChange)="new_star ? new_star!.description = $event : edited_star!.description = $event" 
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <input
       type="text"
       class="input_right_ascension"
       [ngModel]="new_star ? new_star!.right_ascension : edited_star!.right_ascension" 
       (ngModelChange)="new_star ? new_star!.right_ascension = $event : edited_star!.right_ascension = $event" 
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <input
       type="text"
       class="input_declination"
       [ngModel]="new_star ? new_star!.declination : edited_star!.declination" 
       (ngModelChange)="new_star ? new_star!.declination = $event : edited_star!.declination = $event"
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <input
       type="number"
       class="input_apparent_magnitude"
       [ngModel]="new_star ? new_star!.apparent_magnitude : edited_star!.apparent_magnitude" 
       (ngModelChange)="new_star ? new_star!.apparent_magnitude = $event : edited_star!.apparent_magnitude = $event"
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <input
       type="number"
       class="input_mass"
       [ngModel]="new_star ? new_star!.mass : edited_star!.mass" 
       (ngModelChange)="new_star ? new_star!.mass = $event : edited_star!.mass = $event"
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <input
       type="number"
       class="input_radius"
       [ngModel]="new_star ? new_star!.radius : edited_star!.radius" 
       (ngModelChange)="new_star ? new_star!.radius = $event : edited_star!.radius = $event"
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <input
       type="number"
@@ -74,13 +74,13 @@
       id="input_age"
       [ngModel]="new_star ? new_star!.age : edited_star!.age" 
       (ngModelChange)="new_star ? new_star!.age = $event : edited_star!.age = $event"
-      (keydown.enter)="new_star ? add_star() : handle_event_confirm_edit()"
+      (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
     <button
       type="button"
       class="button_add"
       [disabled]="!new_star"
-      (click)="add_star()"
+      (click)="handle_event_confirm_new()"
     >
       {{ new_star ? "Confirm" : "Add new" }}
     </button>
@@ -96,14 +96,12 @@
       type="button"
       class="button_delete"
       [disabled]="selected_star === undefined"
-      (click)="delete_star(selected_star!)"
+      (click)="handle_event_delete_star()"
     >
       Delete
     </button>
   </div>
 </ng-template>
-
-<h2>Stars</h2>
 
 <div class="star_window">
   <div class="search">
@@ -113,9 +111,9 @@
   </div>
 
   <ul class="star_list">
-    <li *ngFor="let star of star_list">
-      <span class="badge">{{ star.star_id || -1 }}</span>
-      <p (click)="handle_event_select_star(star.star_id)" class="name">{{ star.name }}</p>
+    <li *ngFor="let star of star_list" (click)="handle_event_select_star(star.star_id)" >
+      <span class="badge">⭐</span>
+      <p class="name">{{ star.name }}</p>
     </li>
   </ul>
 
@@ -123,7 +121,7 @@
     class="info_card"
     *ngIf="selected_star; else edit_input;"
   >
-    <p class="info_card_header">Star X information:</p>
+    <p class="info_card_header">{{selected_star.name}} informations:</p>
 
     <label for="info_name" class="name_header">Name:</label>
     <label for="info_description" class="description_header"
@@ -177,7 +175,7 @@
       *ngIf="selected_star !== undefined"
       type="button"
       class="button_delete"
-      (click)="delete_star(selected_star)"
+      (click)="handle_event_delete_star()"
     >
       Delete
     </button>

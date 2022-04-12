@@ -1,5 +1,14 @@
+<ng-template #constellation_window>
+  <div class="constellation_window">
+    <app-constellation></app-constellation>
+  </div>
+</ng-template>
+
 <h1>Celeste</h1>
 
-<section>
+<h2 (click)="handle_event_show_star_window()">Stars</h2>
+<h2 (click)="handle_event_show_constellation_window()">Constellations</h2>
+
+<div *ngIf="show_star_window; else constellation_window;" class = star_window>
   <app-star></app-star>
-</section>
+</div>

@@ -1,0 +1,141 @@
+/* ConstellationComponent's private CSS styles */
+.search input {
+    margin: 1rem 0;
+  }
+  .info_card_header {
+    grid-area: info_card_header;
+  }
+  .input_name,
+  .info_name {
+    grid-area: name;
+  }
+  .input_description,
+  .info_description {
+    grid-area: description;
+  }
+  .input_right_ascension,
+  .info_right_ascension {
+    grid-area: right_ascension;
+  }
+  .input_declination,
+  .info_declination {
+    grid-area: declination;
+  }
+  .input_area,
+  .info_area {
+    grid-area: area;
+  }
+  
+  .constellation_window {
+    display: grid;
+    grid-template-areas:
+      "search info_card"
+      "constellation_list info_card";
+    gap: 10px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+  }
+  
+  .info_card {
+    display: grid;
+    grid-template-areas:
+      "info_card_header info_card_header" 
+      "name_header name"
+      "description_header description"
+      "right_ascension_header right_ascension"
+      "declination_header declination"
+      "area_header area"
+      "button_edit button_delete";
+    gap: 10px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    grid-area: info_card;
+  }
+  
+  .constellation_list {
+    list-style-type: none;
+    padding: 0;
+    grid-area: constellation_list;
+  }
+  
+  .constellation_list li {
+    display: grid;
+    grid-template-columns: min-content max-content max-content max-content 1fr max-content max-content;
+    grid-template-areas: "badge name country description . edit delete";
+    margin: 1rem 0;
+    align-items: center;
+    background-color: #eee;
+    border-radius: 4px;
+  }
+  
+  .constellation_list li .badge {
+    grid-area: badge;
+  }
+  
+  .constellation_list li .name {
+    grid-area: name;
+  }
+  
+  .constellation_list li .country {
+    grid-area: country;
+  }
+  
+  .constellation_list li .description {
+    grid-area: description;
+  }
+  
+  .constellation_list li button {
+    margin: 0.3rem;
+    padding: 0.3rem 0.8rem;
+  }
+  
+  .constellation_list li button.edit {
+    grid-area: edit;
+  }
+  
+  .constellation_list li button.delete {
+    grid-area: delete;
+  }
+  
+  .constellation_list li button:hover,
+  .constellation_list li button:focus {
+    color: #eee;
+    background-color: #000;
+  }
+  
+  .constellation_list .badge {
+    padding: 0.5rem 0.6rem;
+    color: white;
+    background-color: #435b60;
+    margin-right: 0.8rem;
+    border-radius: 4px 0 0 4px;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  
+  .constellation_list input {
+    max-width: 12rem;
+    padding: 0.25rem;
+  }
+  
+  @media (max-width: 550px) {
+    .constellation_list li {
+      grid-template-columns: min-content 1fr 1fr;
+      grid-template-rows: 2rem max-content;
+      grid-template-areas:
+        "badge name name"
+        "badge edit delete";
+    }
+  
+    .constellation_list li .name {
+      margin-top: 0.3rem;
+    }
+  
+    .constellation_list li button {
+      justify-self: center;
+    }
+  }
+  
