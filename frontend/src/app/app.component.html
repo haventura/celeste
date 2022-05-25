@@ -1,14 +1,18 @@
-<ng-template #constellation_window>
-  <div class="constellation_window">
-    <app-constellation></app-constellation>
+<div class="main_window">
+  <h1 class = "title">Celeste</h1>
+
+  <h2 (click)="handle_event_show_star_window()" class = "button_star">Stars</h2>
+  <h2 (click)="handle_event_show_constellation_window()" class = "button_constellation">Constellations</h2>
+
+  <div *ngIf="show_star_window;" class = star_window>
+    <app-star (lookup_constellation_emitter)="lookup_constellation($event)"
+    [lookup_star_name]="lookup_name"
+    ></app-star>
   </div>
-</ng-template>
 
-<h1>Celeste</h1>
-
-<h2 (click)="handle_event_show_star_window()">Stars</h2>
-<h2 (click)="handle_event_show_constellation_window()">Constellations</h2>
-
-<div *ngIf="show_star_window; else constellation_window;" class = star_window>
-  <app-star></app-star>
+  <div *ngIf="!show_star_window;" class="constellation_window">
+    <app-constellation (lookup_star_emitter)="lookup_star($event)"
+    [lookup_constellation_name]="lookup_name"
+    ></app-constellation>
+  </div>
 </div>

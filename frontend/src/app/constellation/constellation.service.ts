@@ -67,4 +67,18 @@ export class ConstellationService {
       .delete(url, httpOptions)
       .pipe(catchError(this.handleError('delete_constellation_by_id')));
   }
+
+  add_star_to_constellation(constellation_id: number, star_id: number): Observable<Constellation> {
+    const url = `${this.constellationUrl}/link?star_id=${star_id}&constellation_id=${constellation_id}`;
+    return this.http
+      .post<Constellation>(url, httpOptions)
+      .pipe(catchError(this.handleError<Constellation>('add_star_to_constellation')));
+  };
+
+  remove_star_from_constellation(constellation_id: number, star_id: number): Observable<Constellation> {
+    const url = `${this.constellationUrl}/link?star_id=${star_id}&constellation_id=${constellation_id}`;
+    return this.http
+      .delete<Constellation>(url, httpOptions)
+      .pipe(catchError(this.handleError<Constellation>('remove_star_from_constellation')));
+  };
 }

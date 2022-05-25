@@ -1,3 +1,4 @@
+import { Constellation } from '../constellation/constellation';
 export interface Star {
     star_id: number;
     name: string;
@@ -8,4 +9,5 @@ export interface Star {
     mass: number;
     radius: number;
     age: number;
+    constellation: Constellation;
   }

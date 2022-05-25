@@ -1,6 +1,24 @@
-<ng-template #edit_input>
-    <div class="info_card">
-      <p class="info_card_header">{{selected_constellation!.name}} informations:</p>
+  <div class="constellation_window">
+    <div class = "pannel">
+      <div class="search">
+        <label for="constellation_name">Constellation name: </label>
+        <input type="text" [(ngModel)]="constellation_name_search" id="constellation_name" />
+        <button type="button" (click)="search_constellation_name(constellation_name_search)">Search</button>
+      </div>
+    
+      <ul class="constellation_list">
+        <li *ngFor="let constellation of constellation_list" (click)="handle_event_select_constellation(constellation.constellation_id)" >
+          <span class="badge">⭐</span>
+          <p class="name">{{ constellation.name }}</p>
+        </li>
+      </ul>
+    </div>
+    
+    <div 
+      class="info_card"
+      *ngIf="edited_constellation || new_constellation;"
+    >
+      <p class="info_card_header">{{edited_constellation ? edited_constellation.name : "New constellation"}} informations:</p>
   
       <label for="info_name" class="name_header">Name:</label>
       <label for="info_description" class="description_header"
@@ -13,6 +31,7 @@
         >Declination:</label
       >
       <label for="info_area" class="area_header">Age:</label>
+      <label for="info_stars" class="stars_header">Stars:</label>
       <input
         type="text"
         class="input_name"
@@ -74,27 +93,12 @@
         Delete
       </button>
     </div>
-  </ng-template>
-  
-  <div class="constellation_window">
-    <div class="search">
-      <label for="constellation_name">Constellation name: </label>
-      <input type="text" [(ngModel)]="constellation_name_search" id="constellation_name" />
-      <button type="button" (click)="search_constellation_name(constellation_name_search)">Search</button>
-    </div>
-  
-    <ul class="constellation_list">
-      <li *ngFor="let constellation of constellation_list" (click)="handle_event_select_constellation(constellation.constellation_id)" >
-        <span class="badge">⭐</span>
-        <p class="name">{{ constellation.name }}</p>
-      </li>
-    </ul>
-  
+
     <div
       class="info_card"
-      *ngIf="selected_constellation; else edit_input;"
+      *ngIf="selected_constellation;"
     >
-      <p class="info_card_header">{{selected_constellation.name}} informations:</p>
+    <p class="info_card_header">{{selected_constellation.name}} informations:</p>
   
       <label for="info_name" class="name_header">Name:</label>
       <label for="info_description" class="description_header"
@@ -107,19 +111,29 @@
         >Declination:</label
       >
       <label for="info_area" class="area_header">Age:</label>
-      <span class="info_name" id="info_name">{{ selected_constellation!.name }}</span>
+      <label for="info_stars" class="stars_header">Stars:</label>
+      <span class="info_name" id="info_name">{{ selected_constellation.name }}</span>
       <span class="info_description" id="info_description">{{
-        selected_constellation!.description
+        selected_constellation.description
       }}</span>
       <span class="info_right_ascension" id="info_right_ascension">{{
-        selected_constellation!.right_ascension
+        selected_constellation.right_ascension
       }}</span>
       <span class="info_declination" id="info_declination">{{
-        selected_constellation!.declination
+        selected_constellation.declination
       }}</span>
       <span class="info_area" id="info_area">{{
-        selected_constellation!.area
+        selected_constellation.area
       }}</span>
+      <span *ngIf="selected_constellation.stars.length > 0;">
+        <span class="info_stars" id="info_stars" *ngFor=" let star of selected_constellation.stars" (click)="handle_event_lookup_star(star.name)">
+          {{ star.name }}; 
+        </span>
+      </span>
+      <span class="info_stars" id="info_stars" *ngIf="selected_constellation.stars.length === 0;">
+        /
+      </span>
+      
       <button
         type="button"
         class="button_add"

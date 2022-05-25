@@ -1,6 +1,24 @@
-<ng-template #edit_input>
-  <div class="info_card">
-    <p class="info_card_header">{{selected_star!.name}} informations:</p>
+<div class="star_window">
+  <div class = "pannel">
+    <div class="search">
+      <label for="star_name">Star name: </label>
+      <input type="text" [(ngModel)]="star_name_search" id="star_name" />
+      <button type="button" (click)="search_star_name(star_name_search)">Search</button>
+    </div>
+
+    <ul class="star_list">
+      <li *ngFor="let star of star_list" (click)="handle_event_select_star(star.star_id)" >
+        <span class="badge">⭐</span>
+        <p class="name">{{ star.name }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <div 
+    class="info_card"
+    *ngIf="edited_star || new_star;"
+  >
+    <p class="info_card_header">{{edited_star ? edited_star.name : "New star"}} informations:</p>
 
     <label for="info_name" class="name_header">Name:</label>
     <label for="info_description" class="description_header"
@@ -18,11 +36,12 @@
     <label for="info_mass" class="mass_header">Mass:</label>
     <label for="info_radius" class="radius_header">Radius:</label>
     <label for="info_age" class="age_header">Age:</label>
+    <label for="info_constellation" class="constellation_header">Constellation:</label>
     <input
       type="text"
       class="input_name"
-      [ngModel]="new_star ? new_star!.name : edited_star!.name" 
-      (ngModelChange)="new_star ? new_star!.name = $event : edited_star!.name = $event"  
+      [ngModel]="new_star ? new_star.name : edited_star!.name" 
+      (ngModelChange)="new_star ? new_star.name = $event : edited_star!.name = $event"  
       (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
 
@@ -76,6 +95,16 @@
       (ngModelChange)="new_star ? new_star!.age = $event : edited_star!.age = $event"
       (keydown.enter)="new_star ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
+    <select #select
+      name="constellation_option" 
+      id="constellation_option"
+      [ngModel]="new_star ? new_star.constellation : edited_star!.constellation" 
+      (ngModelChange)="new_star ? new_star.constellation = $event : edited_star!.constellation = $event"
+    >
+      <option *ngIf="edited_star && edited_star.constellation" [ngValue]="edited_star.constellation" disabled>{{edited_star.constellation.name}}</option>
+      <option [ngValue]="null" >/</option>
+      <option *ngFor="let constellation of constellation_list" [ngValue] = "constellation">{{ constellation.name }}</option>
+    </select>
     <button
       type="button"
       class="button_add"
@@ -101,25 +130,10 @@
       Delete
     </button>
   </div>
-</ng-template>
-
-<div class="star_window">
-  <div class="search">
-    <label for="star_name">Star name: </label>
-    <input type="text" [(ngModel)]="star_name_search" id="star_name" />
-    <button type="button" (click)="search_star_name(star_name_search)">Search</button>
-  </div>
-
-  <ul class="star_list">
-    <li *ngFor="let star of star_list" (click)="handle_event_select_star(star.star_id)" >
-      <span class="badge">⭐</span>
-      <p class="name">{{ star.name }}</p>
-    </li>
-  </ul>
 
   <div
     class="info_card"
-    *ngIf="selected_star; else edit_input;"
+    *ngIf="selected_star;"
   >
     <p class="info_card_header">{{selected_star.name}} informations:</p>
 
@@ -139,24 +153,26 @@
     <label for="info_mass" class="mass_header">Mass:</label>
     <label for="info_radius" class="radius_header">Radius:</label>
     <label for="info_age" class="age_header">Age:</label>
-    <span class="info_name" id="info_name">{{ selected_star!.name }}</span>
+    <label for="info_constellation" class="constellation_header">Constellation:</label>
+    <span class="info_name" id="info_name">{{ selected_star.name }}</span>
     <span class="info_description" id="info_description">{{
-      selected_star!.description
+      selected_star.description
     }}</span>
     <span class="info_right_ascension" id="info_right_ascension">{{
-      selected_star!.right_ascension
+      selected_star.right_ascension
     }}</span>
     <span class="info_declination" id="info_declination">{{
-      selected_star!.declination
+      selected_star.declination
     }}</span>
     <span class="info_apparent_magnitude" id="info_apparent_magnitude">{{
-      selected_star!.apparent_magnitude
+      selected_star.apparent_magnitude
     }}</span>
-    <span class="info_mass" id="info_mass">{{ selected_star!.mass }}</span>
+    <span class="info_mass" id="info_mass">{{ selected_star.mass }}</span>
     <span class="info_radius" id="info_radius">{{
-      selected_star!.radius
+      selected_star.radius
     }}</span>
-    <span class="info_age" id="info_age">{{ selected_star!.age }}</span>
+    <span class="info_age" id="info_age">{{ selected_star.age }}</span>
+    <span class="info_constellation" id="info_constellation" (click)="handle_event_lookup_constellation()">{{ selected_star.constellation ? selected_star.constellation.name : "/" }}</span>
     <button
       type="button"
       class="button_add"

@@ -1,3 +1,4 @@
+import { Star } from '../star/star';
 export interface Constellation {
     constellation_id: number;
     name: string;
@@ -5,4 +6,5 @@ export interface Constellation {
     right_ascension: string;
     declination: string;
     area: number;
+    stars: Star[];
   }

@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
 import { Constellation } from './constellation';
 import { ConstellationService } from './constellation.service';
@@ -18,10 +18,18 @@ export class ConstellationComponent implements OnInit {
 
   constellation_name_search: string = '';
 
+  @Input() lookup_constellation_name: string = '';
+  @Output() lookup_star_emitter = new EventEmitter<string>();
+
   constructor(private constellationService: ConstellationService) {}
 
   ngOnInit() {
-    this.get_constellation_list();
+    if(this.lookup_constellation_name === ''){
+      this.get_constellation_list();
+    }
+    else{
+      this.search_constellation_name(this.lookup_constellation_name);
+    }
   }
 
   handle_event_select_constellation(constellation_id: number) {
@@ -74,6 +82,12 @@ export class ConstellationComponent implements OnInit {
     this.new_constellation = undefined
   }
 
+  handle_event_lookup_star(name: string){
+    if(name){
+      this.lookup_star_emitter.emit(name);
+    }
+  }
+
   get_constellation_list(): void {
     this.constellationService
       .get_constellation_list('')
@@ -85,7 +99,6 @@ export class ConstellationComponent implements OnInit {
   }
 
   add_constellation(): void{
-    let new_constellation: Constellation = {} as Constellation;
     this.constellationService
           .add_constellation(this.new_constellation!)
           .subscribe((constellation) => ((this.constellation_list.push(constellation)), (this.selected_constellation = constellation)));
@@ -101,7 +114,7 @@ export class ConstellationComponent implements OnInit {
     if (constellation_name && constellation_name !== '') {
       this.constellationService
         .get_constellation_list(constellation_name)
-        .subscribe((constellation_list) => (this.constellation_list = constellation_list));
+        .subscribe((constellation_list) => (this.constellation_list = constellation_list, this.constellation_list.length > 0 ? this.selected_constellation = this.constellation_list[0] : ""));
     } else {
       this.get_constellation_list();
     }
