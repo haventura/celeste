@@ -88,6 +88,17 @@ export class ConstellationComponent implements OnInit {
     }
   }
 
+  handle_event_cancel(){
+    if(this.lookup_constellation_name === ''){
+      this.get_constellation_list();
+    }
+    else{
+      this.search_constellation_name(this.lookup_constellation_name);     
+    }
+    this.edited_constellation = undefined;
+    this.new_constellation = undefined;
+  }
+
   get_constellation_list(): void {
     this.constellationService
       .get_constellation_list('')

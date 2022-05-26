@@ -89,13 +89,24 @@ export class StarComponent implements OnInit {
     this.delete_star(this.selected_star!);
     this.selected_star = this.star_list[0];
     this.edited_star = undefined;
-    this.new_star = undefined
+    this.new_star = undefined;
   }
 
   handle_event_lookup_constellation(){
     if(this.selected_star && this.selected_star.constellation){
       this.lookup_constellation_emitter.emit(this.selected_star.constellation.name);
     }
+  }
+
+  handle_event_cancel(){
+    if(this.lookup_star_name === ''){
+      this.get_star_list();
+    }
+    else{
+      this.search_star_name(this.lookup_star_name);     
+    }
+    this.edited_star = undefined;
+    this.new_star = undefined;
   }
 
   get_star_list(): void {
