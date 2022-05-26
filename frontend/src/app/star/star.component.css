@@ -1,9 +1,7 @@
-/* StarComponent's private CSS styles */
-.search input {
-  margin: 1rem 0;
-}
 .info_card_header {
   grid-area: info_card_header;
+  font-family: Verdana,sans-serif;
+  font-size: 15px;
 }
 .input_name,
 .info_name {
@@ -37,22 +35,88 @@
 .info_age {
   grid-area: age;
 }
+.input_constellation,
+.info_constellation{
+  grid-area: constellation;
+}
+.search{
+  grid-area: search;
+  width: 100%;
+}
 
-.star_window {
-  display: grid;
-  grid-template-areas:
-    "search info_card"
-    "star_list info_card";
-  gap: 10px;
-  padding: 10px;
-  border: 2px solid black;
-  border-radius: 5px;
+.button {
+  background-color: white;
+  color: #282A35;
+  border: 2px solid #282A35;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.button_add{
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width:fit-content;
+}
+
+.button:hover {
+  background-color: #282A35;
+  color: white;
+}
+
+label, span{
+  font-family: Verdana,sans-serif;
+  font-size: 13px;
+}
+
+.search input{
+  float: left;
+  width: 66%;
+  margin: 10px 5px 10px 10px;
+  border: 1px solid #ddd; 
+  padding: 4px;
+}
+.search button{
+  margin: 10px 10px 10px 5px;
+  padding: 3px 13px;
+  width: 17%;
+}
+.search input,
+.search button{
+  font-size: 16px;
+}
+.pannel{
+  float: left;
+  width: 20vw;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+  justify-self: left;
 }
 
 .info_card {
+  display: inline-block;
+  left:20vw;
+  width: 60vw;
+  padding: 10px;
+  border: 2px solid #282A35;
+  border-top: 0px;
+}
+
+.info_grid {
   display: grid;
+  grid-template-columns: 200px auto;
   grid-template-areas:
-    "info_card_header info_card_header" 
     "name_header name"
     "description_header description"
     "right_ascension_header right_ascension"
@@ -61,28 +125,27 @@
     "mass_header mass"
     "radius_header radius"
     "age_header age"
-    "button_edit button_delete";
+    "constellation_header constellation";
   gap: 10px;
   padding: 10px;
-  border: 2px solid black;
-  border-radius: 5px;
-  grid-area: info_card;
+}
+
+.fa-star{
+  color: gold;
 }
 
 .star_list {
   list-style-type: none;
-  padding: 0;
-  grid-area: star_list;
+  padding: 0px;
+  margin: 10px 0px 0px;
 }
 
 .star_list li {
   display: grid;
-  grid-template-columns: min-content max-content max-content max-content 1fr max-content max-content;
-  grid-template-areas: "badge name country description . edit delete";
-  margin: 1rem 0;
+  grid-template-columns: min-content max-content;
+  grid-template-areas: "badge name";
   align-items: center;
   background-color: #eee;
-  border-radius: 4px;
 }
 
 .star_list li .badge {
@@ -91,65 +154,31 @@
 
 .star_list li .name {
   grid-area: name;
+  font-family: "Segoe UI",Arial,sans-serif;
 }
-
-.star_list li .country {
-  grid-area: country;
+.star_list li:hover {
+  background-color: #282A35;
+  color: white;
 }
-
-.star_list li .description {
-  grid-area: description;
-}
-
-.star_list li button {
-  margin: 0.3rem;
-  padding: 0.3rem 0.8rem;
-}
-
-.star_list li button.edit {
-  grid-area: edit;
-}
-
-.star_list li button.delete {
-  grid-area: delete;
-}
-
-.star_list li button:hover,
-.star_list li button:focus {
-  color: #eee;
-  background-color: #000;
-}
-
 .star_list .badge {
   padding: 0.5rem 0.6rem;
   color: white;
-  background-color: #435b60;
+  background-color: #282A35;
   margin-right: 0.8rem;
-  border-radius: 4px 0 0 4px;
   align-self: stretch;
   display: flex;
   align-items: center;
 }
 
-.star_list input {
-  max-width: 12rem;
-  padding: 0.25rem;
-}
-
 @media (max-width: 550px) {
   .star_list li {
     grid-template-columns: min-content 1fr 1fr;
-    grid-template-rows: 2rem max-content;
+    grid-template-rows: max-content;
     grid-template-areas:
-      "badge name name"
-      "badge edit delete";
+      "badge name name";
   }
 
   .star_list li .name {
     margin-top: 0.3rem;
-  }
-
-  .star_list li button {
-    justify-self: center;
   }
 }

@@ -1,25 +1,75 @@
-<div class="star_window">
-  <div class = "pannel">
-    <div class="search">
-      <label for="star_name">Star name: </label>
-      <input type="text" [(ngModel)]="star_name_search" id="star_name" />
-      <button type="button" (click)="search_star_name(star_name_search)">Search</button>
-    </div>
+<div class = "pannel">
+  <button
+    type="button"
+    class="button button_add"
+    [disabled]="new_star || edited_star"
+    (click)="handle_event_new_star()"
+  >
+    <i class="fa-solid fa-plus"></i> New star
+  </button>
 
-    <ul class="star_list">
-      <li *ngFor="let star of star_list" (click)="handle_event_select_star(star.star_id)" >
-        <span class="badge">⭐</span>
-        <p class="name">{{ star.name }}</p>
-      </li>
-    </ul>
+  <div class="search">
+    <input type="text" [(ngModel)]="star_name_search" placeholder="Search..."/>
+    <button type="button" class="button button_search" (click)="search_star_name(star_name_search)"><i class="fa-solid fa-magnifying-glass"></i></button>
   </div>
 
-  <div 
-    class="info_card"
-    *ngIf="edited_star || new_star;"
-  >
-    <p class="info_card_header">{{edited_star ? edited_star.name : "New star"}} informations:</p>
+  <ul class="star_list">
+    <li *ngFor="let star of star_list" (click)="handle_event_select_star(star.star_id)" >
+      <span class="badge"><i class="fa-solid fa-star"></i></span>
+      <p class="name">{{ star.name }}</p>
+    </li>
+  </ul>
+</div>
 
+<div 
+  class="info_card"
+>
+  <p class="info_card_header" *ngIf="selected_star || edited_star || new_star; else no_info">{{selected_star ? selected_star.name : edited_star ? edited_star.name : "New star"}} informations:</p>
+  
+  <ng-template #no_info>
+    <p class="info_card_header">No informations to display.</p>
+  </ng-template>
+
+  <div class="info_grid" *ngIf="selected_star;">
+    <label for="info_name" class="name_header">Name:</label>
+    <label for="info_description" class="description_header"
+      >Description:</label
+    >
+    <label for="info_right_ascension" class="right_ascension_header"
+      >Right ascension:</label
+    >
+    <label for="info_declination" class="declination_header"
+      >Declination:</label
+    >
+    <label for="info_apparent_magnitude" class="apparent_magnitude_header"
+      >Apparent magnitude:</label
+    >
+    <label for="info_mass" class="mass_header">Mass:</label>
+    <label for="info_radius" class="radius_header">Radius:</label>
+    <label for="info_age" class="age_header">Age:</label>
+    <label for="info_constellation" class="constellation_header">Constellation:</label>
+    <span class="info_name" id="info_name">{{ selected_star.name }}</span>
+    <span class="info_description" id="info_description">{{
+      selected_star.description
+    }}</span>
+    <span class="info_right_ascension" id="info_right_ascension">{{
+      selected_star.right_ascension
+    }}</span>
+    <span class="info_declination" id="info_declination">{{
+      selected_star.declination
+    }}</span>
+    <span class="info_apparent_magnitude" id="info_apparent_magnitude">{{
+      selected_star.apparent_magnitude
+    }}</span>
+    <span class="info_mass" id="info_mass">{{ selected_star.mass }}</span>
+    <span class="info_radius" id="info_radius">{{
+      selected_star.radius
+    }}</span>
+    <span class="info_age" id="info_age">{{ selected_star.age }}</span>
+    <span class="info_constellation" id="info_constellation" (click)="handle_event_lookup_constellation()">{{ selected_star.constellation ? selected_star.constellation.name : "/" }}</span>  
+  </div>
+
+  <div class="info_grid" *ngIf="edited_star || new_star;">
     <label for="info_name" class="name_header">Name:</label>
     <label for="info_description" class="description_header"
       >Description:</label
@@ -97,6 +147,7 @@
     />
     <select #select
       name="constellation_option" 
+      class="input_constellation"
       id="constellation_option"
       [ngModel]="new_star ? new_star.constellation : edited_star!.constellation" 
       (ngModelChange)="new_star ? new_star.constellation = $event : edited_star!.constellation = $event"
@@ -105,95 +156,43 @@
       <option [ngValue]="null" >/</option>
       <option *ngFor="let constellation of constellation_list" [ngValue] = "constellation">{{ constellation.name }}</option>
     </select>
-    <button
-      type="button"
-      class="button_add"
-      [disabled]="!new_star"
-      (click)="handle_event_confirm_new()"
-    >
-      {{ new_star ? "Confirm" : "Add new" }}
-    </button>
-    <button
-      type="button"
-      class="button_edit"
-      [disabled]="new_star"
-      (click)="handle_event_confirm_edit()"
-    >
-      {{ new_star ? "Edit" : "Confirm" }}
-    </button>
-    <button
-      type="button"
-      class="button_delete"
-      [disabled]="selected_star === undefined"
-      (click)="handle_event_delete_star()"
-    >
-      Delete
-    </button>
   </div>
 
-  <div
-    class="info_card"
-    *ngIf="selected_star;"
+  <button *ngIf="selected_star"
+    type="button"
+    class="button button_edit"
+    (click)="handle_event_edit_star()"
   >
-    <p class="info_card_header">{{selected_star.name}} informations:</p>
-
-    <label for="info_name" class="name_header">Name:</label>
-    <label for="info_description" class="description_header"
-      >Description:</label
-    >
-    <label for="info_right_ascension" class="right_ascension_header"
-      >Right ascension:</label
-    >
-    <label for="info_declination" class="declination_header"
-      >Declination:</label
-    >
-    <label for="info_apparent_magnitude" class="apparent_magnitude_header"
-      >Apparent magnitude:</label
-    >
-    <label for="info_mass" class="mass_header">Mass:</label>
-    <label for="info_radius" class="radius_header">Radius:</label>
-    <label for="info_age" class="age_header">Age:</label>
-    <label for="info_constellation" class="constellation_header">Constellation:</label>
-    <span class="info_name" id="info_name">{{ selected_star.name }}</span>
-    <span class="info_description" id="info_description">{{
-      selected_star.description
-    }}</span>
-    <span class="info_right_ascension" id="info_right_ascension">{{
-      selected_star.right_ascension
-    }}</span>
-    <span class="info_declination" id="info_declination">{{
-      selected_star.declination
-    }}</span>
-    <span class="info_apparent_magnitude" id="info_apparent_magnitude">{{
-      selected_star.apparent_magnitude
-    }}</span>
-    <span class="info_mass" id="info_mass">{{ selected_star.mass }}</span>
-    <span class="info_radius" id="info_radius">{{
-      selected_star.radius
-    }}</span>
-    <span class="info_age" id="info_age">{{ selected_star.age }}</span>
-    <span class="info_constellation" id="info_constellation" (click)="handle_event_lookup_constellation()">{{ selected_star.constellation ? selected_star.constellation.name : "/" }}</span>
-    <button
-      type="button"
-      class="button_add"
-      (click)="handle_event_new_star()"
-    >
-      Add new
-    </button>
-    <button
-      type="button"
-      class="button_edit"
-      (click)="handle_event_edit_star()"
-    >
-      Edit
-    </button>
-    <button
-      *ngIf="selected_star !== undefined"
-      type="button"
-      class="button_delete"
-      (click)="handle_event_delete_star()"
-    >
-      Delete
-    </button>
-  </div>
+    Edit
+  </button>
+  <button *ngIf="selected_star"
+    type="button"
+    class="button button_delete"
+    (click)="handle_event_delete_star()"
+  >
+    Delete
+  </button>
+  <button *ngIf="new_star"
+    type="button"
+    class="button button_confirm"
+    [disabled]="!new_star.name || new_star.name===''"
+    (click)="handle_event_confirm_new()"
+  >
+    Confirm
+  </button>
+  <button *ngIf="edited_star"
+    type="button"
+    class="button button_confirm"
+    [disabled]="!edited_star.name || edited_star.name===''"
+    (click)="handle_event_confirm_edit()"
+  >
+    Confirm
+  </button>
+  <button *ngIf="new_star || edited_star"
+    type="button"
+    class="button button_cancel"
+    (click)="handle_event_cancel()"
+  >
+    Cancel
+  </button>
 </div>

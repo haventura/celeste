@@ -61,6 +61,7 @@ export class StarComponent implements OnInit {
     else{
       this.selected_star = this.star_list[0];
     }
+    this.constellation = undefined;
     this.edited_star = undefined;
     this.new_star = undefined;
   }
@@ -74,13 +75,11 @@ export class StarComponent implements OnInit {
   handle_event_confirm_new() {
     if(this.new_star && this.new_star.name){
       this.add_star();
-      if(this.new_star.constellation){
-        this.constellationService.add_star_to_constellation(this.new_star.constellation.constellation_id, this.new_star.star_id).subscribe();
-      }
     }
     else{
       this.selected_star = this.star_list[0];
     }
+    this.constellation = undefined;
     this.edited_star = undefined;
     this.new_star = undefined;
   }
@@ -129,10 +128,23 @@ export class StarComponent implements OnInit {
       );
   }
 
-  add_star(): void{
+  add_star(): void{ 
+    this.constellation = this.new_star!.constellation!;
+    console.log(this.new_star);
+    console.log(this.constellation);
     this.starService
           .add_star(this.new_star!)
-          .subscribe((star) => ((this.star_list.push(star)), (this.selected_star = star)));
+          .subscribe((star) => (
+            (this.link_star_to_constellation(star)),
+            (this.star_list.push(star)),
+            (this.selected_star = star)
+            ));
+  }
+
+  link_star_to_constellation(star: Star): void{
+    if(this.constellation){
+      this.constellationService.add_star_to_constellation(this.constellation.constellation_id, star.star_id).subscribe();
+    }
   }
 
   delete_star(star: Star): void {
