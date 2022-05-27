@@ -83,12 +83,14 @@ export class ConstellationComponent implements OnInit {
   }
 
   handle_event_lookup_star(name: string){
+    // Open the information pannel about a star of the selected constellation
     if(name){
       this.lookup_star_emitter.emit(name);
     }
   }
 
   handle_event_cancel(){
+    // Cancel the current action and reset the selected star
     if(this.lookup_constellation_name === ''){
       this.get_constellation_list();
     }

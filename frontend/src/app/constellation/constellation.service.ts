@@ -24,7 +24,7 @@ export class ConstellationService {
     this.handleError = httpErrorHandler.createHandleError('ConstellationService');
   }
 
-  /** GET constellations list from the server */
+  /** GET constellations list from the server, optional name to filter the list */
   get_constellation_list(name: string): Observable<Constellation[]> {
     name = name.trim();
     let url = `${this.constellationUrl}`;
