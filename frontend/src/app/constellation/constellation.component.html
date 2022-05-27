@@ -10,7 +10,7 @@
 
   <div class="search">
     <input type="text" [(ngModel)]="constellation_name_search" placeholder="Search..."/>
-    <button type="button" class="button button_search" (click)="search_constellation_name(constellation_name_search)" ><i class="fa-solid fa-magnifying-glass"></i></button>
+    <button type="button" class="button button_search" (click)="search_constellation_name(constellation_name_search)" [disabled]="new_constellation || edited_constellation"><i class="fa-solid fa-magnifying-glass"></i></button>
   </div>
 
   <ul class="constellation_list">
@@ -115,12 +115,12 @@
       (ngModelChange)="new_constellation ? new_constellation!.area = $event : edited_constellation!.area = $event"
       (keydown.enter)="new_constellation ? handle_event_confirm_new() : handle_event_confirm_edit()"
     />
-    <span *ngIf="selected_constellation && selected_constellation.stars && selected_constellation.stars.length > 0;">
-      <span class="info_stars" id="info_stars" *ngFor=" let star of selected_constellation.stars">
+    <span *ngIf="edited_constellation && edited_constellation.stars && edited_constellation.stars.length > 0;">
+      <span class="info_stars" id="info_stars" *ngFor=" let star of edited_constellation.stars">
         {{ star.name }}; 
       </span>
     </span>
-    <span class="info_stars" id="info_stars" *ngIf="!selected_constellation || !selected_constellation.stars || selected_constellation.stars.length === 0;">
+    <span class="info_stars" id="info_stars" *ngIf="!edited_constellation || !edited_constellation.stars || edited_constellation.stars.length === 0;">
       /
     </span>
   </div>
@@ -130,14 +130,14 @@
   class="button button_edit"
   (click)="handle_event_edit_constellation()"
 >
-  Edit
+  <i class="fa-solid fa-pen-to-square"></i> Edit
 </button>
 <button *ngIf="selected_constellation"
   type="button"
   class="button button_delete"
   (click)="handle_event_delete_constellation()"
 >
-  Delete
+  <i class="fa-solid fa-trash-can"></i> Delete
 </button>
 <button *ngIf="new_constellation"
   type="button"
@@ -145,7 +145,7 @@
   [disabled]="!new_constellation.name || new_constellation.name===''"
   (click)="handle_event_confirm_new()"
 >
-  Confirm
+  <i class="fa-solid fa-check"></i> Confirm
 </button>
 <button *ngIf="edited_constellation"
   type="button"
@@ -153,13 +153,13 @@
   [disabled]="!edited_constellation.name || edited_constellation.name===''"
   (click)="handle_event_confirm_edit()"
 >
-  Confirm
+  <i class="fa-solid fa-check"></i> Confirm
 </button>
 <button *ngIf="new_constellation || edited_constellation"
   type="button"
   class="button button_cancel"
   (click)="handle_event_cancel()"
 >
-  Cancel
+  <i class="fa-solid fa-xmark"></i> Cancel
 </button>
 </div>
